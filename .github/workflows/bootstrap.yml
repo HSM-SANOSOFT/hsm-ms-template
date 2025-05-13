@@ -83,20 +83,19 @@ jobs:
       - name: Clean up boilerplate
         run: rm -rf .github/boilerplate
 
-      # 13) Install all project deps
-      - name: Install project dependencies
-        run: pnpm install --frozen-lockfile
-
-      # 14) Add common base deps (already in your script; feel free to omit if unnecessary)
-      - name: Add base dependencies
-        run: pnpm add @nestjs/config @nestjs/typeorm typeorm pg rxjs lodash
-
-      # 15) Remove this bootstrap workflow so it only runs once
+      # 13) Remove this bootstrap workflow so it only runs once
       - name: Remove bootstrap workflow
         run: rm .github/workflows/bootstrap.yml
 
-      # 16) Commit everything back to the repo
-      - name: Commit bootstrap changes
-        uses: stefanzweifel/git-auto-commit-action@v4
-        with:
-          commit_message: 'chore: bootstrap NestJS microservice'
+      # 14) Commit everything back to the repo
+      - name: Commit & push bootstrap changes
+        env:
+          GH_TOKEN: ${{ secrets.GHCR_PASSWORD }}
+        run: |
+          git config user.name "${{ github.actor }}"
+          git config user.email "${{ github.actor }}@users.noreply.github.com"
+          git add .
+          git commit -m "chore: bootstrap NestJS microservice" || echo "No changes to commit"
+          # rewrite 'origin' to include your token so push will authenticate
+          git remote set-url origin https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}.git
+          git push origin HEAD:${{ github.ref_name }}

@@ -18,6 +18,8 @@ jobs:
       # 1) Checkout
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          persist-credentials: true
 
       # 2) Setup Node.js (latest LTS) – *no pnpm cache here*
       - name: Setup Node.js

@@ -41,7 +41,7 @@ jobs:
       - name: Copy Dockerfiles & script
         run: |
           cp .github/boilerplate/Dockerfile.dev .
-          cp .github/boilerplate/Dockerfile.prd .
+          cp .github/boilerplate/Dockerfile.prod .
           cp .github/boilerplate/script.sh .
 
       # 7) Overwrite lint/prettier/tsconfig

@@ -31,11 +31,11 @@ jobs:
 
       # 4) Install Nest CLI
       - name: Install Nest CLI
-        run: pnpm add -g @nestjs/cli
+        run: npm install -g @nestjs/cli
 
       # 5) Scaffold Nest in-place
       - name: Scaffold NestJS project
-        run: pnpm dlx @nestjs/cli new . --skip-install --package-manager pnpm
+        run: nest new . --skip-install --package-manager pnpm
 
       # 6) Copy only Dockerfiles & script.sh
       - name: Copy Dockerfiles & script

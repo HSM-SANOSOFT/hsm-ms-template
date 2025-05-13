@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
 
     # don’t run in the template itself
-    if: github.repository != 'yourOrg/hsm-ms-template'
+    if: github.repository != 'HSM-SANOSOFT/hsm-ms-template'
 
     steps:
       # 1) Checkout

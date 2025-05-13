@@ -10,6 +10,9 @@ on:
 jobs:
   bootstrap:
     runs-on: ubuntu-latest
+    
+    permissions:
+      contents: write # allow the workflow to push changes to the repository
 
     # don’t run in the template itself
     if: github.repository != 'HSM-SANOSOFT/hsm-ms-template'
@@ -20,6 +23,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           persist-credentials: true
+          ref: ${{ github.head_ref }}
 
       # 2) Setup Node.js (latest LTS) – *no pnpm cache here*
       - name: Setup Node.js

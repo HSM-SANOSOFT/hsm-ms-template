@@ -22,7 +22,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          token: ${{ secrets.GHCR_PASSWORD }}
+          token: ${{ secrets.TOKEN_GITHUB }}
           persist-credentials: true
 
       # 2) Setup Node.js (latest LTS) – *no pnpm cache here*

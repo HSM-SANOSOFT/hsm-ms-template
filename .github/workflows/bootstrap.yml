@@ -1,31 +1,31 @@
 # .github/workflows/bootstrap.yml
 
-name: Bootstrap NestJS Service
+name: 🚀 Bootstrap NestJS Service
 
 on:
   push:
-    branches:
-      - main
+    branches: [ main ]
+  workflow_dispatch:
 
 jobs:
   bootstrap:
     runs-on: ubuntu-latest
 
-    if: github.repository != 'HSM-SANOSOFT/hsm-ms-template'
-    
+    # don’t run in the template itself
+    if: github.repository != 'yourOrg/hsm-ms-template'
+
     steps:
-      # 1) Checkout the repo
+      # 1) Checkout
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # 2) Setup Node.js (latest LTS) and cache pnpm
-      - name: Setup Node.js & pnpm cache
+      # 2) Setup Node.js (latest LTS) – *no pnpm cache here*
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 'lts/*'
-          cache: 'pnpm'
+          node-version: 'latest'
 
-      # 3) Install the latest pnpm globally
+      # 3) Install PNPM globally so it's immediately available
       - name: Install pnpm
         run: npm install -g pnpm@latest
 
@@ -33,63 +33,63 @@ jobs:
       - name: Install Nest CLI
         run: pnpm add -g @nestjs/cli
 
-      # 5) Scaffold NestJS project in-place
+      # 5) Scaffold Nest in-place
       - name: Scaffold NestJS project
         run: pnpm dlx @nestjs/cli new . --skip-install --package-manager pnpm
 
-      # 6) Copy only container-related files to root
+      # 6) Copy only Dockerfiles & script.sh
       - name: Copy Dockerfiles & script
         run: |
           cp .github/boilerplate/Dockerfile.dev .
           cp .github/boilerplate/Dockerfile.prd .
           cp .github/boilerplate/script.sh .
 
-      # 7) Overwrite your config files at root
-      - name: Overwrite lint/prettier/tsconfig
+      # 7) Overwrite lint/prettier/tsconfig
+      - name: Overwrite config files
         run: |
           cp -f .github/boilerplate/.prettierrc .
           cp -f .github/boilerplate/eslint.config.mjs .
           cp -f .github/boilerplate/tsconfig.json .
 
-      # 8) Copy filters/ and config/ into src/
-      - name: Copy filters & config directories
+      # 8) Copy filters/ & config/ into src/
+      - name: Copy filters & config dirs
         run: |
           rm -rf src/filters src/config
           cp -R .github/boilerplate/src/filters src/filters
           cp -R .github/boilerplate/src/config src/config
 
-      # 9) Overwrite src/main.ts with your boilerplate version
+      # 9) Overwrite src/main.ts
       - name: Overwrite main.ts
         run: |
           cp -f .github/boilerplate/src/main.ts src/main.ts
 
-      # 10) Run your dependencyInstall.sh from boilerplate
+      # 10) Run your dependencyInstall.sh
       - name: Run dependency install script
         run: bash .github/boilerplate/dependencyInstall.sh
 
-      # 11) Copy shared build-deploy workflow into the new repo
+      # 11) Copy shared build-deploy workflow
       - name: Copy build-deploy workflow
         run: |
           mkdir -p .github/workflows
           cp .github/boilerplate/build-deploy.yml .github/workflows/build-deploy.yml
 
-      # 12) Remove the boilerplate folder
-      - name: Clean up boilerplate sources
+      # 12) Remove boilerplate folder
+      - name: Clean up boilerplate
         run: rm -rf .github/boilerplate
 
-      # 13) Install all project dependencies
+      # 13) Install all project deps
       - name: Install project dependencies
         run: pnpm install --frozen-lockfile
 
-      # 14) Add your common base dependencies
+      # 14) Add common base deps (already in your script; feel free to omit if unnecessary)
       - name: Add base dependencies
         run: pnpm add @nestjs/config @nestjs/typeorm typeorm pg rxjs lodash
 
-      # 15) Remove this bootstrap workflow so it doesn’t linger
+      # 15) Remove this bootstrap workflow so it only runs once
       - name: Remove bootstrap workflow
         run: rm .github/workflows/bootstrap.yml
 
-      # 16) Commit everything in one go
+      # 16) Commit everything back to the repo
       - name: Commit bootstrap changes
         uses: stefanzweifel/git-auto-commit-action@v4
         with:

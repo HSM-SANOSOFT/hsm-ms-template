@@ -5,7 +5,9 @@ pnpm add class-validator@latest
 pnpm add class-transformer@latest  
 pnpm add dotenv@latest  
 pnpm add @nestjs/microservices@latest  
-pnpm add oracledb@latest  
+pnpm add oracledb@latest 
+pnpm add pg@latest 
+pnpm add @nestjs/typeorm@latest typeorm@latest
 pnpm add globals@latest  
 pnpm add joi@latest  
 pnpm add @hsm-sanosoft/hsm-database@latest

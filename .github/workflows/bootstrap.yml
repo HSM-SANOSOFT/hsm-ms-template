@@ -87,7 +87,9 @@ jobs:
 
       # 13) Remove this bootstrap workflow so it only runs once
       - name: Remove bootstrap workflow
-        run: rm .github/workflows/bootstrap.yml
+        run: |
+          rm .github/workflows/bootstrap.yml
+          rm .github/workflows/CICD-Microservices.yml
 
       # 14) Commit everything back to the repo
       - name: Commit bootstrap changes

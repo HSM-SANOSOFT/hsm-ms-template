@@ -8,6 +8,7 @@ pnpm add @nestjs/microservices@latest
 pnpm add oracledb@latest  
 pnpm add globals@latest  
 pnpm add joi@latest  
+pnpm add @hsm-sanosoft/hsm-database@latest
 
 # Add dev dependencies
 pnpm add -D @nestjs/config@latest  
